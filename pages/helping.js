@@ -5,6 +5,7 @@ constructor(page) {
   this.leftarrow = page.locator('.swiper-button-prev');
   this.rightarrow = page.locator('.swiper-button-next');
   this.emailLink = page.locator('a[href="mailto: aocpeviitor@gmail.com"]');
+  this.declaratieLink = page.locator('a[href="https://redirectioneaza.ro/asociatia-oportunitati-si-cariere/" ]');
 }
 
 async gotoHelpingPage() {
@@ -32,5 +33,9 @@ async gotoHelpingPage() {
 }
 async clickEmail() {
   await this.emailLink.click();
+}
+
+async clickDeclaratie() {
+  await this.declaratieLink.click();
 }
 }
