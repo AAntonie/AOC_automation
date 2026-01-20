@@ -5,6 +5,7 @@ class ViewportUtils {
   
   isMobile() {
     const viewport = this.page.viewportSize();
+    if (!viewport) return false; // Default to desktop if viewport is null
     return viewport.width < 1283;
   }
   

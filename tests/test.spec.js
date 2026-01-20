@@ -1,33 +1,19 @@
-const {test, expect} = require("@playwright/test");
-const MainPage = require ("../pages/mainpage");
+const {test, expect} = require('@playwright/test');
+const MainPage = require('../pages/main-page');
 
-
-
-test("Test", async({page})=>{
+test('test', async({page})=> {
     const mainPage = new MainPage(page);
     await mainPage.navigateTo();
-    
-    await mainPage.ourMission.scrollToMission();
-    await mainPage.ourMission.expectLinksToBeCorrect();
+    if(await mainPage.header.isMobile()){
+        await mainPage.header.openHamburgerMenu();
+    }
+
+    const linksCount = await mainPage.header.getNavLinkCount();
+
+    if(linksCount > 0){
+        await mainPage.header.clickJoinDiscord();
+    }
 
     
 })
 
-
-
-test("Test2", async({page})=>{
-
-    const mainPage = new MainPage(page);
-    await mainPage.navigateTo();
-    await mainPage.intro.scrolltoIntro();
-    await expect(mainPage.intro.logo).toBeVisible();
-
-
-
-
-
-
-  
-
-    
-})
