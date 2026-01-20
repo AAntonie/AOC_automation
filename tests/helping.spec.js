@@ -19,5 +19,11 @@ test('Link email este clickable', async ({ page }) => {
   const helping = new HelpingPage(page);
   await helping.gotoHelpingPage();
   await helping.clickEmail();
-  await expect(helping.emailLink).toHaveAttribute('href', 'mailto:contact@site.ro');
+  await expect(helping.emailLink).toHaveAttribute('href', 'mailto: aocpeviitor@gmail.com');
+});
+test('Link Declaratie este clickable', async ({ page }) => {
+  const helping = new HelpingPage(page);
+  await helping.gotoHelpingPage();
+  await helping.clickDeclaratie();
+  await expect(helping.declaratieLink).toHaveAttribute('href', 'https://redirectioneaza.ro/asociatia-oportunitati-si-cariere/');
 });
