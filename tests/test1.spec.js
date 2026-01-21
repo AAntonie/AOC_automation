@@ -1,5 +1,5 @@
 //test
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { Povestidesucces } from '../pages/Povestidesucces.js';
 
 test('Accesare Povești de succes din meniu', async ({ page }) => {

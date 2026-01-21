@@ -1,8 +1,9 @@
-const { expect } = require('@playwright/test');
+import { expect } from '@playwright/test';
 
-exports.Povestidesucces = class Povestidesucces {
+export class Povestidesucces {
   constructor(page) {
     this.page = page;
+    
     this.menuBtn = page.getByRole('button', { name: /meniu|menu/i });
     this.povestiLink = page.getByRole('link', { name: 'Povești de succes' }).first();
   }
