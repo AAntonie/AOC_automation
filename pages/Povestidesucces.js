@@ -1,34 +1,32 @@
- const { expect } = require('@playwright/test');
+const { expect } = require('@playwright/test');
 
- exports.Povestidesucces = class Povestidesucces {
-
+exports.Povestidesucces = class Povestidesucces {
   constructor(page) {
     this.page = page;
-
- this.hamburgerMenu = page.getByRole('button', { name: /meniu|menu/i });
- this.menuPovesti = page.getByRole('link', { name: 'Povești de succes' }).first();
- this.pageTitle = page.getByRole('heading', { name: 'Povești de succes' });
+    this.menuBtn = page.getByRole('button', { name: /meniu|menu/i });
+    this.povestiLink = page.getByRole('link', { name: 'Povești de succes' }).first();
   }
 
-  async gotoPovestidesucces() {
+  async open() {
     await this.page.goto('https://oportunitatisicariere.ro/');
   }
 
-  async openHamburgerMenu() {
-    if (await this.hamburgerMenu.isVisible()) {
-    await this.hamburgerMenu.click();
+  async openPovestiDeSucces() {
+    // dacă meniul hamburger există, dă click
+    if (await this.menuBtn.isVisible()) {
+      await this.menuBtn.click();
+    }
 
-  }
- }
-  async isLoaded() {
-   await expect(this.page.locator('#stories')).toBeVisible({ timeout: 10000 });
-   
-  }
-  async clickPovestiDinSubmeniu() {
-    await this.menuPovesti.waitFor({ state: 'visible' });
-    await this.menuPovesti.click();
-  }
-  async checkTitle() {
-    await expect(this.pageTitle).toBeVisible();
+    // linkul din header/submeniu
+    const povestiLink = this.page.getByRole('link', { name: 'Povești de succes' }).first();
+
+    // click pe link
+    await povestiLink.click();
+
+    // așteaptă secțiunea '#stories' să fie vizibilă
+    const storiesSection = this.page.locator('#stories');
+    await expect(storiesSection).toBeVisible({ timeout: 5000 });
+
+    await this.page.waitForTimeout(5000);
   }
 };
