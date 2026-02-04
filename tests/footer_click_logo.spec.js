@@ -1,31 +1,34 @@
 import { test, expect } from "@playwright/test";
 import { FooterPage } from "../pages/footer.page";
 
-test.describe("Footer logo test", () => {
+// Test suite validating the behavior of the footer logo
+test.describe("Footer logo behavior test", () => {
   let footer;
 
   test.beforeEach(async ({ page }) => {
+    // Navigate to the application homepage before each test
     await page.goto("https://oportunitatisicariere.ro/");
+
+    // Initialize the FooterPage object to access footer elements
     footer = new FooterPage(page);
   });
 
-  test("Click on footer logo works correctly", async ({ page }) => {
+  test("Clicking the footer logo scrolls the page to the top", async ({
+    page,
+  }) => {
+    // Ensure the footer is visible before interacting with it
     await footer.ensureVisible();
 
-    await footer.prepareLink(footer.logoLink);
+    // Scroll down the page to simulate a real user scenario
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 
-    await expect(footer.logoLink).toBeVisible();
-    await expect(footer.logoLink).toBeEnabled();
-
-    const href = await footer.logoLink.getAttribute("href");
-
+    // Click the footer logo
     await footer.logoLink.click();
 
-    // în cazul tău href este "#"
-    if (href === "#") {
-      await expect(page).toHaveURL(/oportunitatisicariere\.ro/);
-    } else {
-      expect(page.url()).toContain(href);
-    }
+    // Assert that the page scrolls back close to the top
+    // expect.poll automatically waits until the condition is met
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeLessThan(100);
   });
 });

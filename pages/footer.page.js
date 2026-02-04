@@ -1,19 +1,20 @@
 export class FooterPage {
   constructor(page) {
     this.page = page;
+
+    // Root footer element used as a base for all footer-related locators
     this.footer = page.locator("footer.footer");
 
-    // 🔹 Logo
+    // Footer logo link and its text elements
     this.logoLink = this.footer.locator(".footer__logo a");
     this.logoTitle1 = this.footer.getByText("ASOCIAȚIA");
     this.logoTitle2 = this.footer.getByText("OPORTUNITĂȚI ȘI CARIERE");
 
-    // 🔹 An curent
+    // Element displaying the current year in the footer
     this.currentYear = this.footer.locator("#current-year");
 
-    // 🔹 Linkuri footer
+    // Collection of all footer links, grouped by purpose and usage type
     this.footerLinks = [
-      // internal
       {
         name: "Misiunea noastră",
         locator: this.footer.getByRole("link", { name: "Misiunea noastră" }),
@@ -44,8 +45,6 @@ export class FooterPage {
         locator: this.footer.getByRole("link", { name: "Întâlniri" }),
         type: "internal",
       },
-
-      // external
       {
         name: "peViitor",
         locator: this.footer.getByRole("link", { name: "peViitor" }),
@@ -68,8 +67,6 @@ export class FooterPage {
         locator: this.footer.getByRole("link", { name: "Confidențialitate" }),
         type: "external",
       },
-
-      // social
       {
         name: "LinkedIn",
         locator: this.footer.locator('a[href*="linkedin"]'),
@@ -103,10 +100,12 @@ export class FooterPage {
     ];
   }
 
+  // Ensures that the footer is visible before performing any interactions
   async ensureVisible() {
     await this.footer.waitFor({ state: "visible" });
   }
 
+  // Prepares a link for interaction by waiting for visibility and scrolling it into view
   async prepareLink(locator) {
     await locator.waitFor({ state: "visible" });
     await locator.scrollIntoViewIfNeeded();

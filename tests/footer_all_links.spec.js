@@ -1,36 +1,45 @@
 import { test, expect } from "@playwright/test";
 import { FooterPage } from "../pages/footer.page";
 
+// Test suite responsible for validating footer links behavior
 test.describe("Footer links tests", () => {
   let footer;
 
   test.beforeEach(async ({ page }) => {
+    // Navigate to the application homepage before each test
     await page.goto("https://oportunitatisicariere.ro/");
+
+    // Initialize the FooterPage object
     footer = new FooterPage(page);
   });
 
   test("All footer links are visible and valid", async ({ page }) => {
-    // Asigurăm vizibilitatea footer-ului
+    // Ensure the footer is visible before starting validations
     await footer.ensureVisible();
 
+    // Iterate through all footer links defined in the page object
     for (const link of footer.footerLinks) {
-      // Pregătim link-ul (derulare + vizibilitate)
+      // Prepare the link by waiting for visibility and scrolling into view
       await footer.prepareLink(link.locator);
 
-      // Obținem href-ul și verificăm că există
+      // Retrieve the href attribute and verify it exists
       const href = await link.locator.getAttribute("href");
       expect(href).toBeTruthy();
 
-      // Test pentru link-uri interne
+      // Validation logic for internal navigation links
       if (link.type === "internal") {
         await link.locator.click();
+
+        // Verify that the navigation leads to the expected URL
         expect(page.url()).toContain(href);
-        await page.goBack(); // revenim la pagina principală ca să testăm următorul link
+
+        // Navigate back to the homepage to continue testing other links
+        await page.goBack();
       }
 
-      // Test pentru link-uri externe
+      // Validation logic for external links
       if (link.type === "external") {
-        // Nu deschidem taburi externe → verificăm doar href-ul
+        // External links are not opened; only the URL format is validated
         expect(href.startsWith("http")).toBeTruthy();
       }
     }
